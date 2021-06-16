@@ -1,3 +1,3 @@
 # kitchef-back
 
-To run application use: npm run serve
+To run application in dev enviroment use: npm run serve
