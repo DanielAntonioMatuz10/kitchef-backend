@@ -6,13 +6,20 @@ const typeDefs = `
     type Query{
         users: [User]
         user(_id : ID!): User
+        
+        ingredients: [Ingredient]
+        ingredient(_id: ID!): Ingredient
     }
 
     type Mutation{
-        createUser(input: UserInput): User
-        deleteUser(_id: ID): User
-        updateUser(_id: ID, input: UserInput): User
+        createUser(input: UserInput!): User
+        deleteUser(_id: ID!): User
+        updateUser(_id: ID!, input: UserInput!): User
         login(email:String!, password:String!): AuthData
+        
+        createIngredient(input: IngredientInput!): Ingredient
+        deleteIngredient(_id: ID!): Ingredient
+        updateIngredient(_id: ID!, input: IngredientInput!): Ingredient
     }
 
     type User{
@@ -35,6 +42,17 @@ const typeDefs = `
         email: String!
         phone: String
         password: String!
+    }
+    
+    type Ingredient{
+        _id: ID!
+        name: String!
+        image: String
+    }
+    
+    input IngredientInput{
+        name: String!
+        image: String
     }
     
     type AuthData {

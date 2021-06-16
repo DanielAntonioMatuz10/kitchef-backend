@@ -1,4 +1,6 @@
 import User from "../models/User";
+import Ingredient from "../models/Ingredient";
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmailConfirmation from "../email";
@@ -7,13 +9,19 @@ import sendEmailConfirmation from "../email";
 export const resolvers = {
     Query: {
         users(_, {}, ctx) {
-            if (!ctx.isAuth) {
-                throw new Error('Unautheticated!');
-            }
-            return User.find();
+            return ctx.isAuth ? User.find() : new Error('Unautheticated!');
         },
+
         user(_, {_id}, ctx) {
             return ctx.isAuth ? User.findById(_id) : new Error('Unautheticated')
+        },
+
+        ingredients(_, {}, ctx) {
+            return ctx.isAuth ? Ingredient.find() : new Error('Unautheticated!');
+        },
+
+        ingredient(_, {_id}, ctx) {
+            return ctx.isAuth ? Ingredient.findById(_id) : new Error('Unautheticated!');
         }
     },
     Mutation: {
@@ -35,7 +43,6 @@ export const resolvers = {
 
         deleteUser(_, {_id}, ctx) {
             return ctx.isAuth ? User.findByIdAndDelete(_id) : new Error('Unautheticated!');
-            ;
         },
 
         updateUser(_, {_id, input}, ctx) {
@@ -62,10 +69,30 @@ export const resolvers = {
 
 
             const token = jwt.sign({userId: user.id, email: user.email}, process.env.JWT_KEY, {
-                expiresIn: '1h'
+                expiresIn: '365d'
             });
 
             return {userId: user.id, token: token}
+        },
+
+        /*verify(_, {id}) {
+            return User.findByIdAndUpdate(id,{status : "Active"});
+        }*/
+
+        createIngredient(_, {input}, ctx){
+            if (!ctx.isAuth){
+                throw new Error('Unautheticated!');
+            }
+            const newIngredient = new Ingredient(input);
+            return newIngredient.save();
+        },
+
+        deleteIngredient(_, {_id}, ctx){
+            return ctx.isAuth ? Ingredient.findByIdAndDelete(_id) : new Error('Unautheticated!');
+        },
+
+        updateIngredient(_, {_id,input}, ctx){
+            return ctx.isAuth ? Ingredient.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated');
         },
     }
 };
