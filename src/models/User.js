@@ -33,9 +33,6 @@ const userSchema = new Schema({
         enum: ['Pending', 'Active'],
         default: 'Pending'
     },
-    confirmationCode: {
-        type: String,
-        unique: true }
 });
 
 export default model('User', userSchema);
