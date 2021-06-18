@@ -1,5 +1,6 @@
 import User from "../models/User";
 import Ingredient from "../models/Ingredient";
+import Region from "../models/Region";
 import Recipe from "../models/Recipe";
 
 import bcrypt from "bcryptjs";
@@ -19,10 +20,18 @@ export const resolvers = {
         },
 
         ingredients(_, {}, ctx) {
-            return ctx.isAuth ? Ingredient.find() : new Error('Unautheticated!');
+            return ctx.isAuth ? Region.find() : new Error('Unautheticated!');
         },
 
         ingredient(_, {_id}, ctx) {
+            return ctx.isAuth ? Region.findById(_id) : new Error('Unautheticated!');
+        },
+
+        regions(_, {}, ctx) {
+            return ctx.isAuth ? Ingredient.find() : new Error('Unautheticated!');
+        },
+
+        region(_, {_id}, ctx) {
             return ctx.isAuth ? Ingredient.findById(_id) : new Error('Unautheticated!');
         },
 
@@ -37,6 +46,10 @@ export const resolvers = {
     Mutation: {
         async createUser(_, {input}) {
 
+            /*if (await User.findOne({phone:input.phone})){
+                throw new Error('phone number already registered');
+            }*/
+
             input.password = await bcrypt.hash(input.password, 12);
 
             const newUser = new User(input);
@@ -44,7 +57,7 @@ export const resolvers = {
             newUser.password = null;
 
             /*const emailToken = jwt.sign({user: newUser._id}, process.env.JWT_KEY, {expiresIn: '1d'});
-            const url = `http://localhost:3000/confirmation/${emailToken}`;
+            const url = `https://www.kitchef.mx/confirmation/${emailToken}`;
 
             sendEmailConfirmation(newUser.email, newUser.firstName, url);*/
 
@@ -67,9 +80,9 @@ export const resolvers = {
                 throw new Error('Invalid Credentials!');
             }
 
-            /*if (user.status === 'Pending') {
+            if (user.status === 'Pending') {
                 return new Error('Pending Account. Please Verify Your Email!')
-            }*/
+            }
 
             const isEqual = await bcrypt.compare(password, user.password);
 
@@ -85,9 +98,9 @@ export const resolvers = {
             return {userId: user.id, token: token}
         },
 
-        /*verify(_, {id}) {
-            return User.findByIdAndUpdate(id,{status : "Active"});
-        }*/
+        verify(_, {_id},ctx) {
+            return User.findByIdAndUpdate(_id,{status : "Active"},{new:true});
+        },
 
         createIngredient(_, {input}, ctx){
             if (!ctx.isAuth){
@@ -103,6 +116,22 @@ export const resolvers = {
 
         updateIngredient(_, {_id,input}, ctx){
             return ctx.isAuth ? Ingredient.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated');
+        },
+
+        createRegion(_, {input}, ctx){
+            if (!ctx.isAuth){
+                throw new Error('Unautheticated!');
+            }
+            const newRegion = new Region(input);
+            return newRegion.save();
+        },
+
+        deleteRegion(_, {_id}, ctx){
+            return ctx.isAuth ? Region.findByIdAndDelete(_id) : new Error('Unautheticated!');
+        },
+
+        updateRegion(_, {_id,input}, ctx){
+            return ctx.isAuth ? Region.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated');
         },
 
         async createRecipe(_, {input}, ctx){
@@ -121,5 +150,6 @@ export const resolvers = {
         async updateRecipe(_, {_id}, {input}, ctx){
             return ctx.isAuth ? Recipe.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated!');
         }
+
     }
 };

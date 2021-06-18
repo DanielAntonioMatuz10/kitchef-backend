@@ -6,7 +6,12 @@ const ingredientSchema = new Schema({
         required: true,
         unique: true
     },
-    image: String
+    image: String,
+    regions: {
+        type: [String],
+        required: true,
+        default: [ 'mx' ]
+    }
 });
 
 export default model('Ingredient', ingredientSchema);

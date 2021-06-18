@@ -9,6 +9,9 @@ const typeDefs = `
         
         ingredients: [Ingredient]
         ingredient(_id: ID!): Ingredient
+        
+        regions: [Region]
+        region(_id: ID!): Region
 
         recipes: [Recipe]
         recipe(_id: ID!): Recipe
@@ -19,14 +22,24 @@ const typeDefs = `
         deleteUser(_id: ID!): User
         updateUser(_id: ID!, input: UserInput!): User
         login(email:String!, password:String!): AuthData
+        verify(_id: ID!): User
         
         createIngredient(input: IngredientInput!): Ingredient
         deleteIngredient(_id: ID!): Ingredient
         updateIngredient(_id: ID!, input: IngredientInput!): Ingredient
-
+        
+        createRegion(input: RegionInput!): Region
+        deleteRegion(_id: ID!): Region
+        updateRegion(_id: ID!, input: RegionInput!): Region
+        
         createRecipe(input: RecipeInput): Recipe
         deleteRecipe(_id: ID!): Recipe
         updateRecipe(_id: ID!, input: RecipeInput): Recipe
+    }
+    
+    type AuthData {
+        userId: ID!
+        token: String!
     }
 
     type User{
@@ -62,11 +75,17 @@ const typeDefs = `
         image: String
     }
     
-    type AuthData {
-        userId: ID!
-        token: String!
+    type Region{
+        _id: ID!
+        code: String!
+        name: String!
     }
-
+    
+    input RegionInput{
+        code: String!
+        name: String!
+    }
+    
     type Recipe{
         _id: ID!
         name: String!
