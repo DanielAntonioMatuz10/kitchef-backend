@@ -134,22 +134,23 @@ export const resolvers = {
             return ctx.isAuth ? Region.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated');
         },
 
-        async createRecipe(_, {input}, ctx){
+        createRecipe(_, {input}, ctx){
             if (!ctx.isAuth){
                 throw new Error('Unautheticated!');
             }
             const newRecipe = Recipe(input)
-            await newRecipe.save();
-            return newRecipe;
+            return newRecipe.save();
         },
 
         deleteRecipe(_, {_id}, ctx) {
             return ctx.isAuth ? Recipe.findByIdAndDelete(_id) : new Error('Unautheticated!');
         },
 
-        async updateRecipe(_, {_id}, {input}, ctx){
+        updateRecipe(_, {_id}, {input}, ctx){
             return ctx.isAuth ? Recipe.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated!');
         }
+
+
 
     }
 };
