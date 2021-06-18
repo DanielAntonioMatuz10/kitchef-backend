@@ -12,6 +12,9 @@ const typeDefs = `
         
         regions: [Region]
         region(_id: ID!): Region
+
+        recipes: [Recipe]
+        recipe(_id: ID!): Recipe
     }
 
     type Mutation{
@@ -28,6 +31,10 @@ const typeDefs = `
         createRegion(input: RegionInput!): Region
         deleteRegion(_id: ID!): Region
         updateRegion(_id: ID!, input: RegionInput!): Region
+        
+        createRecipe(input: RecipeInput): Recipe
+        deleteRecipe(_id: ID!): Recipe
+        updateRecipe(_id: ID!, input: RecipeInput): Recipe
     }
     
     type AuthData {
@@ -78,7 +85,33 @@ const typeDefs = `
         code: String!
         name: String!
     }
-  
+    
+    type Recipe{
+        _id: ID!
+        name: String!
+        ingredients: [String]
+        photo: String!
+        video: String
+        description: String
+        steps: String!
+        star: Int
+        status: String!
+        region: String!
+        difficulty: String!
+    }
+
+    input RecipeInput{
+        name: String!
+        ingredients: [String]
+        photo: String!
+        video: String
+        description: String
+        steps: String!
+        star: Int
+        status: String!
+        region: String!
+        difficulty: String!
+    }
 `;
 
 export default makeExecutableSchema({
