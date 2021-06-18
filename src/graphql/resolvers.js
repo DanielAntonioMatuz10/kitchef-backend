@@ -1,9 +1,11 @@
 import User from "../models/User";
 import Ingredient from "../models/Ingredient";
+import Recipe from "../models/Recipe";
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmailConfirmation from "../email";
+import { async } from "regenerator-runtime";
 
 
 export const resolvers = {
@@ -22,6 +24,14 @@ export const resolvers = {
 
         ingredient(_, {_id}, ctx) {
             return ctx.isAuth ? Ingredient.findById(_id) : new Error('Unautheticated!');
+        },
+
+        recipes(_, {}, ctx) {
+            return ctx.isAuth ? Recipe.find(): new Error('Unautheticated!');
+        },
+
+        recipe(_, {_id}) {
+            return ctx.isAuth ? Recipe.findById(_id) : new Error('Unautheticated!');
         }
     },
     Mutation: {
@@ -94,5 +104,22 @@ export const resolvers = {
         updateIngredient(_, {_id,input}, ctx){
             return ctx.isAuth ? Ingredient.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated');
         },
+
+        async createRecipe(_, {input}, ctx){
+            if (!ctx.isAuth){
+                throw new Error('Unautheticated!');
+            }
+            const newRecipe = Recipe(input)
+            await newRecipe.save();
+            return newRecipe;
+        },
+
+        deleteRecipe(_, {_id}, ctx) {
+            return ctx.isAuth ? Recipe.findByIdAndDelete(_id) : new Error('Unautheticated!');
+        },
+
+        async updateRecipe(_, {_id}, {input}, ctx){
+            return ctx.isAuth ? Recipe.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated!');
+        }
     }
 };

@@ -9,6 +9,9 @@ const typeDefs = `
         
         ingredients: [Ingredient]
         ingredient(_id: ID!): Ingredient
+
+        recipes: [Recipe]
+        recipe(_id: ID!): Recipe
     }
 
     type Mutation{
@@ -20,6 +23,10 @@ const typeDefs = `
         createIngredient(input: IngredientInput!): Ingredient
         deleteIngredient(_id: ID!): Ingredient
         updateIngredient(_id: ID!, input: IngredientInput!): Ingredient
+
+        createRecipe(input: RecipeInput): Recipe
+        deleteRecipe(_id: ID!): Recipe
+        updateRecipe(_id: ID!, input: RecipeInput): Recipe
     }
 
     type User{
@@ -58,6 +65,34 @@ const typeDefs = `
     type AuthData {
         userId: ID!
         token: String!
+    }
+
+    type Recipe{
+        _id: ID!
+        name: String!
+        ingredients: [String]
+        photo: String!
+        video: String!
+        description: String!
+        steps: [String]
+        star: String!
+        status: Boolean!
+        region: String!
+        level: String!
+
+    }
+
+    input RecipeInput{
+        name: String!
+        ingredients: [String]
+        photo: String!
+        video: String!
+        description: String!
+        steps: [String]
+        star: String!
+        status: Boolean!
+        region: String!
+        level: String!
     }
 `;
 
