@@ -18,26 +18,30 @@ const recipeSchema = new Schema({
 
     video: {
         type: String,
-        required: true
+        required: false
     },
 
     description: {
         type: String,
-        required: true
+        required: false
     },
 
     steps: {
-        type: [String],
-        required: true
-    },
-
-    star: {
         type: String,
         required: true
     },
 
+    star: {
+        type: Number,
+        enum: [0, 1, 2, 3, 4, 5],
+        default: 0,
+        required: true
+    },
+
     status: {
-        type: Boolean,
+        type: String,
+        enum: ['Pending', 'Active'],
+        default: 'Pending',
         required: true
     },
 
@@ -46,8 +50,10 @@ const recipeSchema = new Schema({
         required: true
     },
 
-    level: {
+    difficulty: {
         type: String,
+        enum: ['Low', 'Medium', 'Hard'],
+        default: 'Medium',
         required: true
     }
 

@@ -72,27 +72,26 @@ const typeDefs = `
         name: String!
         ingredients: [String]
         photo: String!
-        video: String!
-        description: String!
-        steps: [String]
-        star: String!
-        status: Boolean!
+        video: String
+        description: String
+        steps: String!
+        star: Int
+        status: String!
         region: String!
-        level: String!
-
+        difficulty: String!
     }
 
     input RecipeInput{
         name: String!
         ingredients: [String]
         photo: String!
-        video: String!
-        description: String!
-        steps: [String]
-        star: String!
-        status: Boolean!
+        video: String
+        description: String
+        steps: String!
+        star: Int
+        status: String!
         region: String!
-        level: String!
+        difficulty: String!
     }
 `;
 
