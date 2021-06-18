@@ -34,5 +34,5 @@ app.get('/confirmation/:token', async (req,res) => {
     return res.redirect('/graphql')
 });
 
-const port = 3000;
+const port =  process.env.PORT;
 app.listen(port, () => console.log(`Server on port ${port}`));

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export async function connect() {
     try {
-        await mongoose.connect("mongodb://localhost/kitchefDB", {
+        await mongoose.connect(process.env.DB_URL, {
             useNewUrlParser: true
         });
         console.log("///DB is connected")
