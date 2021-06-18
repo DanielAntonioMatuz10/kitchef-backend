@@ -3,7 +3,7 @@ import sendgrid from "@sendgrid/mail";
 function getMessage(email, name, url) {
     return {
         to: email,
-        from: 'isaacbezares@gmail.com',
+        from: 'info@kitchef.mx',
         subject: 'Welcome to Kitchef!, Verify your email to activate your account',
         html: `Hello ${name} 
         <br><br><br>

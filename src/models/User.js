@@ -22,7 +22,11 @@ const userSchema = new Schema({
     },
     phone: {
         type: String,
-        unique: true
+        index: {
+            unique: true,
+            partialFilterExpression: {phone: {$type: 'string'}},
+        },
+        set: v => (v === '' ? null : v)
     },
     password: {
         type: String,
@@ -33,6 +37,11 @@ const userSchema = new Schema({
         enum: ['Pending', 'Active'],
         default: 'Pending'
     },
+    region:{
+        type: String,
+        required : true,
+        default: 'mx'
+    }
 });
 
 export default model('User', userSchema);

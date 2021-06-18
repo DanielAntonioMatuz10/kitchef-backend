@@ -23,16 +23,5 @@ app.use('/graphql', graphqlHTTP({
     schema: schema
 }));
 
-app.get('/confirmation/:token', async (req,res) => {
-    try {
-        const {user : id} = jwt.verify(req.params.token, process.env.JWT_KEY);
-        await User.findByIdAndUpdate(id,{status : "Active"});
-    } catch (e){
-        res.send('error')
-    }
-
-    return res.redirect('/graphql')
-});
-
 const port = process.env.PORT;
 app.listen(port, () => console.log(`Server on port ${port}`));
