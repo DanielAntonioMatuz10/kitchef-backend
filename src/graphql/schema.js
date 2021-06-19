@@ -15,6 +15,8 @@ const typeDefs = `
 
         recipes: [Recipe]
         recipe(_id: ID!): Recipe
+        
+        buildMealPlan(_id: ID!, nMeals: Int!): [[Recipe]]
     }
 
     type Mutation{
@@ -43,15 +45,17 @@ const typeDefs = `
     }
 
     type User{
-        _id: ID!
-        firstName: String!
-        lastName: String!
-        userName: String!
+        _id: ID
+        firstName: String
+        lastName: String
+        userName: String
         profilePic: String
-        email: String!
+        email: String
         phone: String
         password: String
         status: String
+        region: String
+        preferredIngredients : [String]
     }
 
     input UserInput{
@@ -62,23 +66,28 @@ const typeDefs = `
         email: String!
         phone: String
         password: String!
+        region: String!
+        preferredIngredients: [String]!
     }
     
     type Ingredient{
-        _id: ID!
-        name: String!
+        _id: ID
+        name: String
         image: String
+        regions: [String]
     }
     
     input IngredientInput{
         name: String!
         image: String
+        regions: [String]
     }
     
     type Region{
-        _id: ID!
-        code: String!
-        name: String!
+        _id: ID
+        code: String
+        name: String
+        ingredients : [Ingredient]
     }
     
     input RegionInput{
@@ -87,17 +96,18 @@ const typeDefs = `
     }
     
     type Recipe{
-        _id: ID!
-        name: String!
+        _id: ID
+        name: String
         ingredients: [String]
-        photo: String!
+        photo: String
         video: String
         description: String
-        steps: String!
-        star: Int
-        status: String!
-        region: String!
-        difficulty: String!
+        steps: String
+        stars: Float
+        status: String
+        regions: [String]
+        difficulty: String
+        mealType: [String]
     }
 
     input RecipeInput{
@@ -107,10 +117,10 @@ const typeDefs = `
         video: String
         description: String
         steps: String!
-        star: Int
-        status: String!
-        region: String!
+        stars: Float
+        regions: [String]!
         difficulty: String!
+        mealType: [String]!
     }
 `;
 

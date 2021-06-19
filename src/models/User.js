@@ -40,7 +40,13 @@ const userSchema = new Schema({
     region:{
         type: String,
         required : true,
-        default: 'mx'
+    },
+
+    //TODO: For the future: It may be better to have all user preferences in a separated collection `userPreferences`
+
+    preferredIngredients:{
+        type:[String],
+        required:true
     }
 });
 

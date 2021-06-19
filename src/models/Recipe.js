@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose"
+import {Schema, model} from "mongoose"
 
 const recipeSchema = new Schema({
     name: {
@@ -31,22 +31,17 @@ const recipeSchema = new Schema({
         required: true
     },
 
-    star: {
-        type: Number,
-        enum: [0, 1, 2, 3, 4, 5],
-        default: 0,
-        required: true
-    },
+    stars: Number,
 
     status: {
         type: String,
         enum: ['Pending', 'Active'],
-        default: 'Pending',
+        default: 'Active',
         required: true
     },
 
-    region: {
-        type: String,
+    regions: {
+        type: [String],
         required: true
     },
 
@@ -55,9 +50,13 @@ const recipeSchema = new Schema({
         enum: ['Low', 'Medium', 'Hard'],
         default: 'Medium',
         required: true
+    },
+
+    mealType: {
+        type: [String],
+        enum: ['breakfast', 'lunch', 'dinner'],
+        required: true
     }
-
-
 });
 
 export default model('Recipe', recipeSchema);
