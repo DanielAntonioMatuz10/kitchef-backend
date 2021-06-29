@@ -15,8 +15,9 @@ export const resolvers = {
             return ctx.isAuth ? User.find() : new Error('Unautheticated!');
         },
 
-        user(_, {_id}, ctx) {
-            return ctx.isAuth ? User.findById(_id) : new Error('Unautheticated')
+        user(_, {_id}) {
+            /*return ctx.isAuth ? User.findById(_id) : new Error('Unautheticated')*/
+            return User.findById(_id);
         },
 
         ingredients(_, {}, ctx) {
@@ -81,11 +82,11 @@ export const resolvers = {
         }
     },
     Mutation: {
-        async createUser(_, {input}) {
+        async createUser(_, {input}, ctx) {
 
-            /*if (await User.findOne({phone:input.phone})){
+            if (await User.findOne({phone:input.phone})){
                 throw new Error('phone number already registered');
-            }*/
+            }
 
             input.password = await bcrypt.hash(input.password, 12);
 
@@ -171,11 +172,11 @@ export const resolvers = {
             return ctx.isAuth ? Region.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated');
         },
 
-        createRecipe(_, {input}, ctx) {
+        createRecipe(_, {input}) {
             if (!ctx.isAuth) {
-                throw new Error('Unautheticated!');
-            }
-            const newRecipe = Recipe(input)
+                 throw new Error('Unautheticated!');
+             }
+            const newRecipe = new Recipe(input)
             return newRecipe.save();
         },
 
@@ -187,7 +188,27 @@ export const resolvers = {
             return ctx.isAuth ? Recipe.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated!');
         },
 
+        async addFavoriteRecipe(_, {_idUser, _idRecipe}, ctx) {
+            if (!ctx.isAuth) {
+                throw new Error('Unautheticated!');
+            }
 
+            const user = await User.findById(_idUser);
+            user.favoriteRecipes.push({_id: _idRecipe});
+            await user.save();
+            return user;
+        },
+
+        async removeFavoriteRecipe(_, {_idUser, _idRecipe}, ctx) {
+            if (!ctx.isAuth) {
+                throw new Error('Unautheticated!');
+            }
+
+            const user = await User.findById(_idUser);
+            user.favoriteRecipes.pull({_id: _idRecipe});
+            await user.save();
+            return user;
+        }
     }
 };
 

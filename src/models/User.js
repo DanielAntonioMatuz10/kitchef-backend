@@ -47,7 +47,9 @@ const userSchema = new Schema({
     preferredIngredients:{
         type:[String],
         required:true
-    }
+    },
+
+    favoriteRecipes: [{ type: Schema.Types.ObjectId, ref: 'Recipe'}]  
 });
 
 export default model('User', userSchema);
