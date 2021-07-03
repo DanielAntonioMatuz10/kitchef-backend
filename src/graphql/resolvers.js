@@ -40,7 +40,7 @@ export const resolvers = {
             return ctx.isAuth ? Recipe.find() : new Error('Unautheticated!');
         },
 
-        recipe(_, {_id}) {
+        recipe(_, {_id}, ctx) {
             return ctx.isAuth ? Recipe.findById(_id) : new Error('Unautheticated!');
         },
 
@@ -173,9 +173,7 @@ export const resolvers = {
         },
 
         createRecipe(_, {input}) {
-            if (!ctx.isAuth) {
-                 throw new Error('Unautheticated!');
-             }
+            
             const newRecipe = new Recipe(input)
             return newRecipe.save();
         },
