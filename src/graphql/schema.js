@@ -102,7 +102,7 @@ const typeDefs = `
         photo: String
         video: String
         description: String
-        steps: String
+        steps: [String]
         stars: Float
         status: String
         regions: [String]
@@ -116,7 +116,7 @@ const typeDefs = `
         photo: String!
         video: String
         description: String
-        steps: String!
+        steps: [String]!
         stars: Float
         regions: [String]!
         difficulty: String!
