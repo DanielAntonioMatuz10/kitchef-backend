@@ -25,6 +25,9 @@ const typeDefs = `
         updateUser(_id: ID!, input: UserInput!): User
         login(email:String!, password:String!): AuthData
         verify(_id: ID!): User
+
+        addFavoriteRecipe(_idUser: ID!, _idRecipe: ID!): User
+        removeFavoriteRecipe(_idUser: ID!, _idRecipe: ID!): User
         
         createIngredient(input: IngredientInput!): Ingredient
         deleteIngredient(_id: ID!): Ingredient
@@ -37,6 +40,8 @@ const typeDefs = `
         createRecipe(input: RecipeInput): Recipe
         deleteRecipe(_id: ID!): Recipe
         updateRecipe(_id: ID!, input: RecipeInput): Recipe
+
+       
     }
     
     type AuthData {
@@ -56,6 +61,7 @@ const typeDefs = `
         status: String
         region: String
         preferredIngredients : [String]
+        favoriteRecipes: [Recipe]
     }
 
     input UserInput{
