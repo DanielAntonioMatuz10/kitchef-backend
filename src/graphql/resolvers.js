@@ -15,9 +15,8 @@ export const resolvers = {
             return ctx.isAuth ? User.find() : new Error('Unautheticated!');
         },
 
-        user(_, {_id}) {
-            /*return ctx.isAuth ? User.findById(_id) : new Error('Unautheticated')*/
-            return User.findById(_id);
+        user(_, {_id},ctx) {
+            return ctx.isAuth ? User.findById(_id) : new Error('Unautheticated')
         },
 
         ingredients(_, {}, ctx) {
@@ -40,7 +39,7 @@ export const resolvers = {
             return ctx.isAuth ? Recipe.find() : new Error('Unautheticated!');
         },
 
-        recipe(_, {_id}) {
+        recipe(_, {_id},ctx) {
             return ctx.isAuth ? Recipe.findById(_id) : new Error('Unautheticated!');
         },
 
@@ -82,7 +81,7 @@ export const resolvers = {
         }
     },
     Mutation: {
-        async createUser(_, {input}, ctx) {
+        async createUser(_, {input}) {
 
             if (await User.findOne({phone:input.phone})){
                 throw new Error('phone number already registered');
@@ -94,10 +93,10 @@ export const resolvers = {
             await newUser.save();
             newUser.password = null;
 
-            /*const emailToken = jwt.sign({user: newUser._id}, process.env.JWT_KEY, {expiresIn: '1d'});
+            const emailToken = jwt.sign({user: newUser._id}, process.env.JWT_KEY, {expiresIn: '1d'});
             const url = `https://www.kitchef.mx/confirmation/${emailToken}`;
 
-            sendEmailConfirmation(newUser.email, newUser.firstName, url);*/
+            sendEmailConfirmation(newUser.email, newUser.firstName, url);
 
             return newUser;
         },
@@ -136,7 +135,7 @@ export const resolvers = {
             return {userId: user.id, token: token}
         },
 
-        verify(_, {_id}, ctx) {
+        verify(_, {_id}) {
             return User.findByIdAndUpdate(_id, {status: "Active"}, {new: true});
         },
 
@@ -172,7 +171,7 @@ export const resolvers = {
             return ctx.isAuth ? Region.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated');
         },
 
-        createRecipe(_, {input}) {
+        createRecipe(_, {input}, ctx) {
             if (!ctx.isAuth) {
                  throw new Error('Unautheticated!');
              }
