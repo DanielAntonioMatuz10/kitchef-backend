@@ -18,7 +18,7 @@ const app = express();
 connect();
 
 app.use(isAuth);
-app.use(cors);
+app.use(cors());
 
 app.use('/graphql', graphqlHTTP({
     graphiql: true,
