@@ -12,7 +12,7 @@ import {async} from "regenerator-runtime";
 export const resolvers = {
     Query: {
         users(_, {}, ctx) {
-            return ctx.isAuth ? User.find() : new Error('Unautheticated!');
+            return true ? User.find() : new Error('Unautheticated!');
         },
 
         user(_, {_id}) {
@@ -79,6 +79,12 @@ export const resolvers = {
             }
 
             return [breakfastRecipes, lunchRecipes, dinnerRecipes];
+        },
+
+        async recommendation(_,{input}) {
+            let regex = new RegExp(input);
+            console.log(regex);
+            return await Recipe.find({$or: [{name: {$regex: regex}}, {ingredients: {$regex: regex}}]});
         }
     },
     Mutation: {

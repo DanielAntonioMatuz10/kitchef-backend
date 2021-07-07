@@ -17,6 +17,8 @@ const typeDefs = `
         recipe(_id: ID!): Recipe
         
         buildMealPlan(_id: ID!, nMeals: Int!): [[Recipe]]
+
+        recommendation(input: String!): [Recipe]
     }
 
     type Mutation{
