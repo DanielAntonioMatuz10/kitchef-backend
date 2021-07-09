@@ -81,10 +81,6 @@ export const resolvers = {
     Mutation: {
         async createUser(_, {input}) {
 
-            if (await User.findOne({phone:input.phone})){
-                throw new Error('phone number already registered');
-            }
-
             input.password = await bcrypt.hash(input.password, 12);
 
             const newUser = new User(input);
