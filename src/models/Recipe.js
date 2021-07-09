@@ -54,7 +54,7 @@ const recipeSchema = new Schema({
 
     mealType: {
         type: [String],
-        enum: ['breakfast', 'lunch', 'dinner'],
+        enum: ['Breakfast', 'Lunch', 'Dinner'],
         required: true
     }
 });
