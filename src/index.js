@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+const cors = require('cors');
 
 import {graphqlHTTP} from "express-graphql";
 import schema from "./graphql/schema";
