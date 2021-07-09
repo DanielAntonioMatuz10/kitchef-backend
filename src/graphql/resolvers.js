@@ -6,8 +6,6 @@ import Recipe from "../models/Recipe";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmailConfirmation from "../email";
-import {async} from "regenerator-runtime";
-
 
 export const resolvers = {
     Query: {

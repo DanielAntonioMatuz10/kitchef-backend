@@ -22,7 +22,7 @@ const typeDefs = `
     type Mutation{
         createUser(input: UserInput!): User
         deleteUser(_id: ID!): User
-        updateUser(_id: ID!, input: UserInput!): User
+        updateUser(_id: ID!, input: UserUpdate!): User
         login(email:String!, password:String!): AuthData
         verify(_id: ID!): User
 
@@ -31,15 +31,15 @@ const typeDefs = `
         
         createIngredient(input: IngredientInput!): Ingredient
         deleteIngredient(_id: ID!): Ingredient
-        updateIngredient(_id: ID!, input: IngredientInput!): Ingredient
+        updateIngredient(_id: ID!, input: IngredientUpdate!): Ingredient
         
         createRegion(input: RegionInput!): Region
         deleteRegion(_id: ID!): Region
-        updateRegion(_id: ID!, input: RegionInput!): Region
+        updateRegion(_id: ID!, input: RegionUpdate!): Region
         
         createRecipe(input: RecipeInput): Recipe
         deleteRecipe(_id: ID!): Recipe
-        updateRecipe(_id: ID!, input: RecipeInput): Recipe
+        updateRecipe(_id: ID!, input: RecipeUpdate): Recipe
 
        
     }
@@ -76,6 +76,18 @@ const typeDefs = `
         preferredIngredients: [String]!
     }
     
+    input UserUpdate{
+        firstName: String
+        lastName: String
+        userName: String
+        profilePic: String
+        email: String
+        phone: String
+        password: String
+        region: String
+        preferredIngredients: [String]
+    }
+    
     type Ingredient{
         _id: ID
         name: String
@@ -85,6 +97,12 @@ const typeDefs = `
     
     input IngredientInput{
         name: String!
+        image: String
+        regions: [String]
+    }
+    
+    input IngredientUpdate{
+        name: String
         image: String
         regions: [String]
     }
@@ -99,6 +117,11 @@ const typeDefs = `
     input RegionInput{
         code: String!
         name: String!
+    }
+    
+    input RegionUpdate{
+        code: String
+        name: String
     }
     
     type Recipe{
@@ -127,6 +150,19 @@ const typeDefs = `
         regions: [String]!
         difficulty: String!
         mealType: [String]!
+    }
+    
+    input RecipeUpdate{
+        name: String
+        ingredients: [String]
+        photo: String
+        video: String
+        description: String
+        steps: [String]
+        stars: Float
+        regions: [String]
+        difficulty: String
+        mealType: [String]
     }
 `;
 
