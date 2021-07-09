@@ -62,6 +62,9 @@ const typeDefs = `
         region: String
         preferredIngredients : [String]
         favoriteRecipes: [Recipe]
+        skillLevel: String
+        dayPlan: Int
+        budget: Int
     }
 
     input UserInput{
@@ -74,6 +77,9 @@ const typeDefs = `
         password: String!
         region: String!
         preferredIngredients: [String]!
+        skillLevel: String
+        dayPlan: Int
+        budget: Int!
     }
     
     input UserUpdate{
@@ -86,6 +92,9 @@ const typeDefs = `
         password: String
         region: String
         preferredIngredients: [String]
+        skillLevel: String
+        dayPlan: Int
+        budget: Int
     }
     
     type Ingredient{
