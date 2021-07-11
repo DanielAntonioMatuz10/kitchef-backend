@@ -11,6 +11,11 @@ const recipeSchema = new Schema({
         required: true
     },
 
+    detailedIngredients: {
+        type: [String],
+        required: true
+    },
+
     photo: {
         type: String,
         required: true
@@ -27,7 +32,7 @@ const recipeSchema = new Schema({
     },
 
     steps: {
-        type: String,
+        type: [String],
         required: true
     },
 
@@ -54,7 +59,7 @@ const recipeSchema = new Schema({
 
     mealType: {
         type: [String],
-        enum: ['breakfast', 'lunch', 'dinner'],
+        enum: ['Breakfast', 'Lunch', 'Dinner'],
         required: true
     }
 });

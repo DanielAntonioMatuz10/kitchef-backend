@@ -49,7 +49,24 @@ const userSchema = new Schema({
         required:true
     },
 
-    favoriteRecipes: [{ type: Schema.Types.ObjectId, ref: 'Recipe'}]  
+    favoriteRecipes: [{ type: Schema.Types.ObjectId, ref: 'Recipe'}],
+
+    skillLevel: {
+        type: String,
+        enum: ['Beginner', 'Medium', 'Advanced'],
+        default: 'Beginner'
+    },
+
+    dayPlan: {
+        type: "Number",
+        enum: [1,2,3,4,5,6,7],
+        default: 7
+    },
+
+    budget: {
+        type: "Number",
+        required: true
+    }
 });
 
 export default model('User', userSchema);
