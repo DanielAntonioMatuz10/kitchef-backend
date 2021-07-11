@@ -137,6 +137,7 @@ const typeDefs = `
         _id: ID
         name: String
         ingredients: [String]
+        detailedIngredients: [String]
         photo: String
         video: String
         description: String
@@ -150,7 +151,8 @@ const typeDefs = `
 
     input RecipeInput{
         name: String!
-        ingredients: [String]
+        ingredients: [String]!
+        detailedIngredients: [String]!
         photo: String!
         video: String
         description: String

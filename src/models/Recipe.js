@@ -11,6 +11,11 @@ const recipeSchema = new Schema({
         required: true
     },
 
+    detailedIngredients: {
+        type: [String],
+        required: true
+    },
+
     photo: {
         type: String,
         required: true
