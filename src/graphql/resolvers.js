@@ -12,7 +12,7 @@ import {async} from "regenerator-runtime";
 export const resolvers = {
     Query: {
         users(_, {}, ctx) {
-            return true ? User.find() : new Error('Unautheticated!');
+            return ctx.isAuth ? User.find() : new Error('Unautheticated!');
         },
 
         user(_, {_id}) {
