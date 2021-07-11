@@ -37,7 +37,7 @@ export const resolvers = {
             return ctx.isAuth ? Recipe.find() : new Error('Unautheticated!');
         },
 
-        recipe(_, {_id},ctx) {
+        recipe(_, {_id}, ctx) {
             return ctx.isAuth ? Recipe.findById(_id) : new Error('Unautheticated!');
         },
 
@@ -76,6 +76,12 @@ export const resolvers = {
             }
 
             return [breakfastRecipes, lunchRecipes, dinnerRecipes];
+        },
+
+        async recommendation(_,{input}) {
+            let regex = new RegExp(input);
+            console.log(regex);
+            return await Recipe.find({$or: [{name: {$regex: regex}}, {ingredients: {$regex: regex}}]});
         }
     },
     Mutation: {
