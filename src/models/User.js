@@ -47,6 +47,25 @@ const userSchema = new Schema({
     preferredIngredients:{
         type:[String],
         required:true
+    },
+
+    favoriteRecipes: [{ type: Schema.Types.ObjectId, ref: 'Recipe'}],
+
+    skillLevel: {
+        type: String,
+        enum: ['Beginner', 'Medium', 'Advanced'],
+        default: 'Beginner'
+    },
+
+    dayPlan: {
+        type: "Number",
+        enum: [1,2,3,4,5,6,7],
+        default: 7
+    },
+
+    budget: {
+        type: "Number",
+        required: true
     }
 });
 

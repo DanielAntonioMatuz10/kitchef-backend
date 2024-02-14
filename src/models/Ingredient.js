@@ -10,7 +10,7 @@ const ingredientSchema = new Schema({
     regions: {
         type: [String],
         required: true,
-        default: [ 'mx' ]
+        default: [ 'MX' ]
     }
 });
 

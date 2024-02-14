@@ -6,8 +6,6 @@ import Recipe from "../models/Recipe";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmailConfirmation from "../email";
-import {async} from "regenerator-runtime";
-
 
 export const resolvers = {
     Query: {
@@ -15,7 +13,7 @@ export const resolvers = {
             return ctx.isAuth ? User.find() : new Error('Unautheticated!');
         },
 
-        user(_, {_id}, ctx) {
+        user(_, {_id},ctx) {
             return ctx.isAuth ? User.findById(_id) : new Error('Unautheticated')
         },
 
@@ -39,7 +37,7 @@ export const resolvers = {
             return ctx.isAuth ? Recipe.find() : new Error('Unautheticated!');
         },
 
-        recipe(_, {_id}) {
+        recipe(_, {_id}, ctx) {
             return ctx.isAuth ? Recipe.findById(_id) : new Error('Unautheticated!');
         },
 
@@ -78,14 +76,16 @@ export const resolvers = {
             }
 
             return [breakfastRecipes, lunchRecipes, dinnerRecipes];
+        },
+
+        async recommendation(_,{input}) {
+            let regex = new RegExp(input);
+            console.log(regex);
+            return await Recipe.find({$or: [{name: {$regex: regex}}, {ingredients: {$regex: regex}}]});
         }
     },
     Mutation: {
         async createUser(_, {input}) {
-
-            /*if (await User.findOne({phone:input.phone})){
-                throw new Error('phone number already registered');
-            }*/
 
             input.password = await bcrypt.hash(input.password, 12);
 
@@ -93,10 +93,10 @@ export const resolvers = {
             await newUser.save();
             newUser.password = null;
 
-            /*const emailToken = jwt.sign({user: newUser._id}, process.env.JWT_KEY, {expiresIn: '1d'});
+            const emailToken = jwt.sign({user: newUser._id}, process.env.JWT_KEY, {expiresIn: '1d'});
             const url = `https://www.kitchef.mx/confirmation/${emailToken}`;
 
-            sendEmailConfirmation(newUser.email, newUser.firstName, url);*/
+            sendEmailConfirmation(newUser.email, newUser.firstName, url);
 
             return newUser;
         },
@@ -135,7 +135,7 @@ export const resolvers = {
             return {userId: user.id, token: token}
         },
 
-        verify(_, {_id}, ctx) {
+        verify(_, {_id}) {
             return User.findByIdAndUpdate(_id, {status: "Active"}, {new: true});
         },
 
@@ -173,9 +173,9 @@ export const resolvers = {
 
         createRecipe(_, {input}, ctx) {
             if (!ctx.isAuth) {
-                throw new Error('Unautheticated!');
-            }
-            const newRecipe = Recipe(input)
+                 throw new Error('Unautheticated!');
+             }
+            const newRecipe = new Recipe(input)
             return newRecipe.save();
         },
 
@@ -187,7 +187,27 @@ export const resolvers = {
             return ctx.isAuth ? Recipe.findByIdAndUpdate(_id, input, {new: true}) : new Error('Unautheticated!');
         },
 
+        async addFavoriteRecipe(_, {_idUser, _idRecipe}, ctx) {
+            if (!ctx.isAuth) {
+                throw new Error('Unautheticated!');
+            }
 
+            const user = await User.findById(_idUser);
+            user.favoriteRecipes.push({_id: _idRecipe});
+            await user.save();
+            return user;
+        },
+
+        async removeFavoriteRecipe(_, {_idUser, _idRecipe}, ctx) {
+            if (!ctx.isAuth) {
+                throw new Error('Unautheticated!');
+            }
+
+            const user = await User.findById(_idUser);
+            user.favoriteRecipes.pull({_id: _idRecipe});
+            await user.save();
+            return user;
+        }
     }
 };
 

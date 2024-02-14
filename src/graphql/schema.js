@@ -17,26 +17,33 @@ const typeDefs = `
         recipe(_id: ID!): Recipe
         
         buildMealPlan(_id: ID!, nMeals: Int!): [[Recipe]]
+
+        recommendation(input: String!): [Recipe]
     }
 
     type Mutation{
         createUser(input: UserInput!): User
         deleteUser(_id: ID!): User
-        updateUser(_id: ID!, input: UserInput!): User
+        updateUser(_id: ID!, input: UserUpdate!): User
         login(email:String!, password:String!): AuthData
         verify(_id: ID!): User
+
+        addFavoriteRecipe(_idUser: ID!, _idRecipe: ID!): User
+        removeFavoriteRecipe(_idUser: ID!, _idRecipe: ID!): User
         
         createIngredient(input: IngredientInput!): Ingredient
         deleteIngredient(_id: ID!): Ingredient
-        updateIngredient(_id: ID!, input: IngredientInput!): Ingredient
+        updateIngredient(_id: ID!, input: IngredientUpdate!): Ingredient
         
         createRegion(input: RegionInput!): Region
         deleteRegion(_id: ID!): Region
-        updateRegion(_id: ID!, input: RegionInput!): Region
+        updateRegion(_id: ID!, input: RegionUpdate!): Region
         
         createRecipe(input: RecipeInput): Recipe
         deleteRecipe(_id: ID!): Recipe
-        updateRecipe(_id: ID!, input: RecipeInput): Recipe
+        updateRecipe(_id: ID!, input: RecipeUpdate): Recipe
+
+       
     }
     
     type AuthData {
@@ -56,6 +63,10 @@ const typeDefs = `
         status: String
         region: String
         preferredIngredients : [String]
+        favoriteRecipes: [Recipe]
+        skillLevel: String
+        dayPlan: Int
+        budget: Int
     }
 
     input UserInput{
@@ -68,6 +79,24 @@ const typeDefs = `
         password: String!
         region: String!
         preferredIngredients: [String]!
+        skillLevel: String
+        dayPlan: Int
+        budget: Int!
+    }
+    
+    input UserUpdate{
+        firstName: String
+        lastName: String
+        userName: String
+        profilePic: String
+        email: String
+        phone: String
+        password: String
+        region: String
+        preferredIngredients: [String]
+        skillLevel: String
+        dayPlan: Int
+        budget: Int
     }
     
     type Ingredient{
@@ -79,6 +108,12 @@ const typeDefs = `
     
     input IngredientInput{
         name: String!
+        image: String
+        regions: [String]
+    }
+    
+    input IngredientUpdate{
+        name: String
         image: String
         regions: [String]
     }
@@ -95,14 +130,20 @@ const typeDefs = `
         name: String!
     }
     
+    input RegionUpdate{
+        code: String
+        name: String
+    }
+    
     type Recipe{
         _id: ID
         name: String
         ingredients: [String]
+        detailedIngredients: [String]
         photo: String
         video: String
         description: String
-        steps: String
+        steps: [String]
         stars: Float
         status: String
         regions: [String]
@@ -112,15 +153,29 @@ const typeDefs = `
 
     input RecipeInput{
         name: String!
-        ingredients: [String]
+        ingredients: [String]!
+        detailedIngredients: [String]!
         photo: String!
         video: String
         description: String
-        steps: String!
+        steps: [String]!
         stars: Float
         regions: [String]!
         difficulty: String!
         mealType: [String]!
+    }
+    
+    input RecipeUpdate{
+        name: String
+        ingredients: [String]
+        photo: String
+        video: String
+        description: String
+        steps: [String]
+        stars: Float
+        regions: [String]
+        difficulty: String
+        mealType: [String]
     }
 `;
 
